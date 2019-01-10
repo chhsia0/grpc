@@ -36,6 +36,10 @@ elseif("${gRPC_SSL_PROVIDER}" STREQUAL "package")
   # project itself does not provide installation support in its CMakeLists.txt
   # See https://cmake.org/cmake/help/v3.6/module/FindOpenSSL.html
   find_package(OpenSSL REQUIRED)
+
+  if (OPENSSL_VERSION VERSION_LESS "1.0.2")
+    add_definitions(-DTSI_OPENSSL_ALPN_SUPPORT=0)
+  endif()
   
   if(TARGET OpenSSL::SSL)
     set(_gRPC_SSL_LIBRARIES OpenSSL::SSL OpenSSL::Crypto)
